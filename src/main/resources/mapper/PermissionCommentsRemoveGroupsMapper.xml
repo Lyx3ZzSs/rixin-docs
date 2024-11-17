@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onlyoffice.integration.repositories.PermissionCommentsRemoveGroupsRepository">
+
+    <insert id="insertCommentsRemoveGroups">
+        insert into `permission_comments_remove_groups` (`permission_id`,`comments_remove_groups_id`)
+        values
+        <foreach collection="commentRemoveGroups" item="group" separator=",">
+            (#{permissionId}, #{group.id})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onlyoffice.integration.repositories.PermissionRepository">
+
+    <resultMap id="BaseResultMap" type="com.onlyoffice.integration.entities.Permission">
+        <id property="id" column="p_id"/>
+        <result property="comment" column="p_comment"/>
+        <result property="copy" column="p_copy"/>
+        <result property="download" column="p_download"/>
+        <result property="edit" column="p_edit"/>
+        <result property="print" column="p_print"/>
+        <result property="fillForms" column="p_fill_forms"/>
+        <result property="submitForm" column="p_submit_form"/>
+        <result property="modifyFilter" column="p_modify_filter"/>
+        <result property="modifyContentControl" column="p_modify_content_control"/>
+        <result property="review" column="p_review"/>
+        <result property="chat" column="p_chat"/>
+        <result property="templates" column="p_templates"/>
+        <result property="protect" column="p_protect"/>
+
+        <collection property="reviewGroups" select="com.onlyoffice.integration.repositories.GroupRepository.getGroupById" column="review_groups_id" fetchType="lazy"/>
+
+        <collection property="commentsViewGroups" select="com.onlyoffice.integration.repositories.GroupRepository.getGroupById" column="comments_view_groups_id" fetchType="lazy"/>
+
+        <collection property="commentsEditGroups" select="com.onlyoffice.integration.repositories.GroupRepository.getGroupById" column="comments_edit_groups_id" fetchType="lazy"/>
+
+        <collection property="commentsRemoveGroups" select="com.onlyoffice.integration.repositories.GroupRepository.getGroupById" column="comments_remove_groups_id" fetchType="lazy"/>
+
+        <collection property="userInfoGroups" select="com.onlyoffice.integration.repositories.GroupRepository.getGroupById" column="comments_remove_groups_id" fetchType="lazy"/>
+    </resultMap>
+
+    <select id="getPermissionsById" resultMap="BaseResultMap">
+        SELECT
+            p.`id` AS `p_id`,
+            p.`chat` AS `p_chat`,
+            p.`comment` AS `p_comment`,
+            p.`copy` AS `p_copy`,
+            p.`download` AS `p_download`,
+            p.`edit` AS `p_edit`,
+            p.`fill_forms` AS `p_fill_forms`,
+            p.`modify_content_control` AS `p_modify_content_control`,
+            p.`modify_filter` AS `p_modify_filter`,
+            p.`print` AS `p_print`,
+            p.`protect` AS `p_protect`,
+            p.`review` AS `p_review`,
+            p.`submit_form` AS `p_submit_form`,
+            p.`templates` AS `p_templates`,
+            pceg.`comments_edit_groups_id` AS `comments_edit_groups_id`,
+            pcrg.`comments_remove_groups_id` AS `comments_remove_groups_id`,
+            pcvg.`comments_view_groups_id` AS `comments_view_groups_id`,
+            prg.`review_groups_id` AS `review_groups_id`,
+            puig.`user_info_groups_id` AS `user_info_groups_id`
+        FROM
+            permission p
+                LEFT JOIN permission_comments_edit_groups pceg ON p.id = pceg.permission_id
+                LEFT JOIN permission_comments_remove_groups pcrg ON p.id = pcrg.permission_id
+                LEFT JOIN permission_comments_view_groups pcvg ON p.id = pcvg.permission_id
+                LEFT JOIN permission_review_groups prg ON p.id = prg.permission_id
+                LEFT JOIN permission_user_info_groups puig ON p.id = puig.permission_id
+        where p.`id` = #{id};
+    </select>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onlyoffice.integration.repositories.GroupRepository">
+
+    <resultMap id="BaseResultMap" type="com.onlyoffice.integration.entities.Group">
+        <id property="id" column="g_id"/>
+        <result property="name" column="g_name"/>
+        <collection property="users" ofType="com.onlyoffice.integration.entities.User" select="com.onlyoffice.integration.repositories.UserRepository.getUserListByGroupId" column="g_id" fetchType="lazy"/>
+    </resultMap>
+
+    <select id="getGroupById" resultMap="BaseResultMap">
+        SELECT
+            `group`.id AS `g_id`,
+            `group`.`name` AS `g_name`
+        FROM
+            `group`
+        WHERE
+            `group`.id = #{gid};
+    </select>
+
+    <select id="findGroupByName" resultType="com.onlyoffice.integration.entities.Group">
+        SELECT
+            `group`.id,
+            `group`.`name`
+        FROM
+            `group`
+        WHERE
+            `name` = #{name};
+    </select>
+</mapper>

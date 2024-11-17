@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onlyoffice.integration.repositories.UserRepository">
+
+    <resultMap id="BaseResultMap" type="com.onlyoffice.integration.entities.User">
+        <!-- 基本字段 -->
+        <id property="id" column="u_id"/>
+        <result property="name" column="u_name"/>
+        <result property="email" column="u_email"/>
+        <result property="favorite" column="u_favorite"/>
+        <result property="avatar" column="u_avatar"/>
+        <result property="image" column="u_image"/>
+<!--        <result property="goback" column="u_goback"/>-->
+        <association property="goback">
+            <id property="id" column="g_id"/>
+            <result property="text" column="g_text"/>
+            <result property="blank" column="g_blank"/>
+        </association>
+        <!--Group 关联;-->
+        <association property="group" select="com.onlyoffice.integration.repositories.GroupRepository.getGroupById" column="group_id" fetchType="lazy"/>
+
+        <!--Permissions 关联-->
+        <association property="permissions" select="com.onlyoffice.integration.repositories.PermissionRepository.getPermissionsById" column="permissions_id" fetchType="lazy" />
+
+       <!--用户描述关联-->
+        <collection property="descriptions" select="com.onlyoffice.integration.repositories.UserDescriptionsRepository.getDescriptionsByUserId" column="u_id" fetchType="lazy"/>
+    </resultMap>
+
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT
+            u.`id` AS u_id,
+            u.`avatar` AS u_avatar,
+            u.`email` AS u_email,
+            u.`favorite` AS u_favorite,
+            u.`image` AS u_image,
+            u.`name` AS u_name,
+            u.`group_id` AS group_id,
+            u.`permissions_id` AS permissions_id,
+            g.`id` AS g_id,
+            g.`text` AS g_text,
+            g.`blank` AS g_blank
+        FROM
+            `user` u
+                LEFT JOIN `goback` g ON u.goback_id = g.id;
+    </select>
+    <select id="getUserListByGroupId" resultMap="BaseResultMap">
+        SELECT
+            u.`id` AS u_id,
+            u.`avatar` AS u_avatar,
+            u.`email` AS u_email,
+            u.`favorite` AS u_favorite,
+            u.`image` AS u_image,
+            u.`name` AS u_name,
+            u.`group_id` AS group_id,
+            u.`permissions_id` AS permissions_id,
+            g.`id` AS g_id,
+            g.`text` AS g_text,
+            g.`blank` AS g_blank,
+            ud.`user_id` AS ud_id,
+            ud.`descriptions` AS descriptions
+        FROM
+            `user` u
+                LEFT JOIN `goback` g ON u.goback_id = g.id
+                LEFT JOIN `user_descriptions` ud ON u.id = ud.user_id
+        WHERE
+            u.group_id = #{groupId}
+    </select>
+    <select id="getUserById" resultMap="BaseResultMap">
+        SELECT
+            u.`id` AS u_id,
+            u.`avatar` AS u_avatar,
+            u.`email` AS u_email,
+            u.`favorite` AS u_favorite,
+            u.`image` AS u_image,
+            u.`name` AS u_name,
+            u.`group_id` AS group_id,
+            u.`permissions_id` AS permissions_id,
+            g.`id` AS g_id,
+            g.`text` AS g_text,
+            g.`blank` AS g_blank,
+            ud.`user_id` AS ud_id,
+            ud.`descriptions` AS descriptions
+        FROM
+            `user` u
+                LEFT JOIN `goback` g ON u.goback_id = g.id
+                LEFT JOIN `user_descriptions` ud ON u.id = ud.user_id
+        WHERE
+            u.id = #{id}
+    </select>
+
+    <insert id="insertNewUser" useGeneratedKeys="true" keyProperty="id">
+        insert into `user`(`id`,`avatar`,`email`,`favorite`,`goback_id`,`image`,`name`,`group_id`,`permissions_id`)
+        values (#{id},#{avatar},#{email},#{favorite},#{goback.id},#{image},#{name},#{group.id},#{permissions.id})
+    </insert>
+</mapper>

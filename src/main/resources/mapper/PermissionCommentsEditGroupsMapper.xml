@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onlyoffice.integration.repositories.PermissionCommentsEditGroupsRepository">
+
+    <insert id="insertCommentsEditGroups">
+        insert into `permission_comments_edit_groups` (`permission_id`,`comments_edit_groups_id`)
+        values
+        <foreach collection="commentEditGroups" item="group" separator=",">
+            (#{permissionId}, #{group.id})
+        </foreach>
+    </insert>
+</mapper>

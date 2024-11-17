@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.onlyoffice.integration.repositories.UserDescriptionsRepository">
+
+
+    <insert id="insertDescriptions">
+        insert into `user_descriptions` (`user_id`,`descriptions`)
+        values
+        <foreach collection="descriptions" item="description" separator=",">
+            (#{id}, #{description})
+        </foreach>
+    </insert>
+    <select id="getDescriptionsByUserId" resultType="java.lang.String">
+        SELECT descriptions FROM user_descriptions WHERE user_descriptions.user_id = 1;
+    </select>
+</mapper>
