@@ -18,19 +18,15 @@
 
 package com.onlyoffice.integration.entities;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
-/*@Entity
-@Table(name = "`group`")*/
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class Group {
-    @TableId(type = IdType.AUTO)
-    private Integer id;
+public class Group extends AbstractEntity{
 //    @Column(unique = true)
     private String name;
 //    @OneToMany(mappedBy = "group")

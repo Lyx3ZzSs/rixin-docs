@@ -22,15 +22,13 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
-//@Entity
-//@Table(name = "`permission`")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class Permission {
-    @TableId(type = IdType.AUTO)
-    private Integer id;
+public class Permission extends AbstractEntity{
     private Boolean comment = true;
     private Boolean copy = true;
     private Boolean download = true;

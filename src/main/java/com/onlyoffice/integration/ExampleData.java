@@ -16,8 +16,7 @@
  *
  */
 
-/*
-package com.onlyoffice.integration;
+/*package com.onlyoffice.integration;
 
 import com.onlyoffice.integration.documentserver.serializers.FilterState;
 import com.onlyoffice.integration.entities.Goback;
@@ -104,13 +103,13 @@ public class ExampleData {
                 "", List.of(FilterState.NULL.toString()), List.of(FilterState.NULL.toString()),
                 List.of(FilterState.NULL.toString()), List.of(FilterState.NULL.toString()),
                 List.of(FilterState.NULL.toString()), null, true, true, true,
-                new Goback(null,null, false), true);
+                new Goback(null, false), true);
 
         // create user 2 with the specified parameters
         userService.createUser("Mark Pottato", "pottato@example.com", descriptionUserSecond,
                 "group-2", List.of("", "group-2"), List.of(FilterState.NULL.toString()),
                 List.of("group-2", ""), List.of("group-2"), List.of("group-2", ""), true, true,
-                true, true, new Goback(null,"Go to Documents", null), false);
+                true, true, new Goback("Go to Documents", null), false);
 
         // create user 3 with the specified parameters
         userService.createUser("Hamish Mitchell", null, descriptionUserThird,

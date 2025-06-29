@@ -18,22 +18,16 @@
 
 package com.onlyoffice.integration.entities;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
 import java.util.List;
 
-//@Entity
-//@Table(name = "`user`")
-@Getter
-@Setter
-public class User{
-    @TableId(type = IdType.AUTO)
-    private Integer id;
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class User extends AbstractEntity{
     private String name;
     private String email;
     private Boolean favorite;

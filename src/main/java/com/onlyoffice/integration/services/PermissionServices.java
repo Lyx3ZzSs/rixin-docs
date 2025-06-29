@@ -24,8 +24,10 @@ import com.onlyoffice.integration.entities.PermissionReviewGroups;
 import com.onlyoffice.integration.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 
 @Service
 public class PermissionServices {
@@ -71,11 +73,16 @@ public class PermissionServices {
 
         permissionRepository.insert(permission);  // save new permissions
         Integer permissionId = permission.getId();
-        permissionReviewGroupsRepository.inserReviewGroups(permissionId,reviewGroups);
+        /*permissionReviewGroupsRepository.inserReviewGroups(permissionId,reviewGroups);
         permissionCommentsEditGroupsRepository.insertCommentsEditGroups(permissionId,commentEditGroups);
         permissionCommentsRemoveGroupsRepository.insertCommentsRemoveGroups(permissionId,commentRemoveGroups);
         permissionCommentsViewGroupsRepository.insertCommentsViewGroups(permissionId,commentViewGroups);
-        permissionUserInfoGroupsRepository.insertUserInfoGroups(permissionId,userInfoGroups);
+        permissionUserInfoGroupsRepository.insertUserInfoGroups(permissionId,userInfoGroups);*/
+        insertIfNotEmpty(reviewGroups,permissionReviewGroupsRepository::inserReviewGroups,permissionId);
+        insertIfNotEmpty(commentEditGroups,permissionCommentsEditGroupsRepository::insertCommentsEditGroups,permissionId);
+        insertIfNotEmpty(commentRemoveGroups,permissionCommentsRemoveGroupsRepository::insertCommentsRemoveGroups,permissionId);
+        insertIfNotEmpty(commentViewGroups,permissionCommentsViewGroupsRepository::insertCommentsViewGroups,permissionId);
+        insertIfNotEmpty(userInfoGroups,permissionUserInfoGroupsRepository::insertUserInfoGroups,permissionId);
         return permission;
     }
 
@@ -85,5 +92,12 @@ public class PermissionServices {
 
         return newPermission;
     }
+
+    private <T> void insertIfNotEmpty(List<T> list, BiConsumer<Integer, List<T>> inserter, Integer permissionId) {
+        if (!CollectionUtils.isEmpty(list)) {
+            inserter.accept(permissionId, list);
+        }
+    }
+
 
 }

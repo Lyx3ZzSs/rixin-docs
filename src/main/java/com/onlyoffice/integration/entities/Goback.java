@@ -18,23 +18,17 @@
 
 package com.onlyoffice.integration.entities;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 
-/*@Entity
-@Table(name = "`goback`")*/
-
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Goback implements Serializable {
-    @TableId(type = IdType.AUTO)
-    private Integer id;
+public class Goback extends AbstractEntity {
     private String text;
     private Boolean blank;
 }
